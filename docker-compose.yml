@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  matching:
+    container_name: FastAPIMatching
+    build:
+      context: ./Matching-API
+      dockerfile: Dockerfile
+    # ./docker
+    volumes:
+      # - ./src:/var/www/html
+      - ./Matching-API:/usr/app/fastapi
+      # - ./:/usr/app/fastapi
+    ports:
+      - "8000:8000"
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+  cv_extractor:
+    container_name: FastAPI
+    build:
+      context: ./hth_fastapi
+      dockerfile: Dockerfile.dev
+    # ./docker
+    volumes:
+      # - ./src:/var/www/html
+      - ./hth_fastapi:/usr/app/fastapi
+      # - ./:/usr/app/fastapi
+    ports:
+      - "8001:8001"
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8001
+    # * reda: how can I move this service into dockerfile directly
+    # * chatGPT
+    # FROM <base-image-from-Dockerfile.dev>
+    # COPY ./CvTheque /usr/app/fastapi
+    # WORKDIR /usr/app/fastapi
+    # EXPOSE 8000
+    # CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
