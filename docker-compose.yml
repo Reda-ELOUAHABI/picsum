@@ -2,6 +2,8 @@ version: "3.8"
 
 services:
   matching:
+    env_file:
+      - "./Matching-API/.env"
     container_name: FastAPIMatching
     build:
       context: ./Matching-API
@@ -16,6 +18,8 @@ services:
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
   cv_extractor:
+    env_file:
+      - "./hth_fastapi/.env"
     container_name: FastAPI
     build:
       context: ./hth_fastapi
