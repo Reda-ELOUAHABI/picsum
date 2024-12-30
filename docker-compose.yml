@@ -16,7 +16,6 @@ services:
     ports:
       - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
   cv_extractor:
     env_file:
       - "./hth_fastapi/.env"
@@ -32,6 +31,17 @@ services:
     ports:
       - "8001:8001"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8001
+  resume-assistant:
+    build:
+      context: ./ResumeParserOpenAI
+      dockerfile: Dockerfile
+    env_file:
+      - "./ResumeParserOpenAI/.env"
+    ports:
+      - "8002:8002"
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8002
+    volumes:
+      - ./ResumeParserOpenAI:/usr/app/fastapi
     # * reda: how can I move this service into dockerfile directly
     # * chatGPT
     # FROM <base-image-from-Dockerfile.dev>
